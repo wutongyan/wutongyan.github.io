@@ -266,64 +266,70 @@
     margin-top: 6px;
   }
 
-  /* ─── MARQUEE (JS-driven) ─── */
-  .marquee-section {
-    padding: 80px 0;
-    border-top: 1px solid var(--border);
-    overflow: hidden;
-    position: relative;
-  }
+ /* ─── MARQUEE (sleek strip) ─── */
+.marquee-section {
+  padding: 80px 0;
+  border-top: 1px solid var(--border);
+  position: relative;
+}
 
-  /* Soft fade edges */
-  .marquee-section::before,
-  .marquee-section::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    width: 80px;
-    z-index: 2;
-    pointer-events: none;
-  }
-  .marquee-section::before {
-    left: 0;
-    background: linear-gradient(to right, var(--bg), transparent);
-  }
-  .marquee-section::after {
-    right: 0;
-    background: linear-gradient(to left, var(--bg), transparent);
-  }
+/* the “strip” */
+.marquee-shell{
+  position: relative;
+  overflow: hidden;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.06);
+  background: linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02));
+  box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+  padding: 14px 0;
+}
 
-  .marquee-track {
-    display: flex;
-    will-change: transform;
-  }
+/* soft fades inside the strip */
+.marquee-shell::before,
+.marquee-shell::after{
+  content:'';
+  position:absolute; top:0; bottom:0;
+  width: 90px;
+  z-index: 2;
+  pointer-events:none;
+}
+.marquee-shell::before{ left:0; background: linear-gradient(to right, rgba(10,10,10,1), rgba(10,10,10,0)); }
+.marquee-shell::after{ right:0; background: linear-gradient(to left, rgba(10,10,10,1), rgba(10,10,10,0)); }
 
-  .marquee-item {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-    padding: 0 32px;
-    opacity: 0.3;
-    filter: grayscale(100%) brightness(2);
-    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    text-decoration: none;
-  }
+.marquee-track {
+  display: flex;
+  will-change: transform;
+  position: relative;
+  z-index: 1;
+}
 
-  .marquee-item:hover {
-    opacity: 0.9;
-    filter: grayscale(0%) brightness(1.2);
-    transform: scale(1.2);
-  }
+.marquee-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  padding: 8px 28px;
+  opacity: 0.55;
+  filter: grayscale(100%) contrast(1.05) brightness(1.35);
+  transition: opacity 0.25s ease, filter 0.25s ease, transform 0.25s ease, background 0.25s ease;
+  text-decoration: none;
+  border-radius: 10px;
+}
 
-  .marquee-item img {
-    height: 28px;
-    width: auto;
-    max-width: 110px;
-    object-fit: contain;
-    pointer-events: none;
-  }
+.marquee-item:hover {
+  opacity: 1;
+  filter: grayscale(0%) contrast(1) brightness(1.15);
+  background: rgba(255,255,255,0.04);
+  transform: translateY(-1px);
+}
+
+.marquee-item img {
+  height: 28px;
+  width: auto;
+  max-width: 120px;
+  object-fit: contain;
+  pointer-events: none;
+}
 
   /* ─── CONNECT ─── */
   .connect-grid {
@@ -446,7 +452,7 @@
 <!-- LOGO MARQUEE -->
 <div class="marquee-section">
   <div class="section-label fade-in" style="text-align:center; margin-bottom: 32px;">Affiliations</div>
-
+<div class="marquee-shell">
   <div class="marquee-track" id="marquee-track">
     <!-- canonical set (JS clones as needed) -->
     <a class="marquee-item" href="https://www.tum.de/en/" target="_blank" rel="noopener" title="Technical University of Munich">
@@ -476,6 +482,7 @@
     <a class="marquee-item" href="https://www.helmholtz.de/en" target="_blank" rel="noopener" title="Helmholtz">
       <img src="assets/logos/helmholtz.svg" alt="Helmholtz" style="height:32px;">
     </a>
+     </div>
   </div>
 </div>
 
@@ -548,13 +555,13 @@
         </div>
       </a>
 
-      <a class="connect-card" href="mailto:tongyan.wu@tum.de">
+      <a class="connect-card" href="mailto:website@tongyanwu.com">
         <div class="icon">
           <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
         </div>
         <div>
           <div class="label">Email</div>
-          <div class="handle">contact 'at' tongyanwu.com</div>
+          <div class="handle">contact@tongyanwu.com</div>
         </div>
       </a>
 
