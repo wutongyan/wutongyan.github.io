@@ -31,107 +31,637 @@
     -webkit-font-smoothing: antialiased;
   }
 
+  /* Subtle grain */
   body::before {
     content: '';
     position: fixed;
-    inset: 0;
+    top: 0; left: 0; width: 100%; height: 100%;
     background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
-    pointer-events:none;
-    z-index:9999;
+    pointer-events: none;
+    z-index: 9999;
   }
 
-  .container{max-width:720px;margin:0 auto;padding:0 32px}
+  .container {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 0 32px;
+  }
 
-  nav{position:fixed;top:0;width:100%;z-index:100;backdrop-filter:blur(20px) saturate(180%);background:rgba(10,10,10,.75);border-bottom:1px solid var(--border)}
-  nav .container{display:flex;justify-content:space-between;align-items:center;height:52px}
-  nav .links{display:flex;gap:28px}
-  nav .links a{font-family:Inter,sans-serif;font-size:11px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--text-secondary);text-decoration:none}
+  /* ─── NAV ─── */
+  nav {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 100;
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    background: rgba(10,10,10,0.75);
+    border-bottom: 1px solid var(--border);
+  }
 
-  .hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding-top:52px}
-  .hero h1{font-size:clamp(38px,5.5vw,58px);color:var(--accent)}
-  .degrees{font-family:Inter,sans-serif;font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--text-muted)}
+  nav .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 52px;
+  }
 
-  section{padding:100px 0;border-top:1px solid var(--border)}
+  nav .logo {
+    font-weight: 600;
+    font-size: 15px;
+    letter-spacing: 0.02em;
+    color: var(--text-primary);
+  }
 
-  .marquee-section{padding:80px 0;border-top:1px solid var(--border);overflow:hidden;position:relative}
-  .marquee-section::before,.marquee-section::after{content:'';position:absolute;top:0;bottom:0;width:80px;z-index:2;pointer-events:none}
-  .marquee-section::before{left:0;background:linear-gradient(to right,var(--bg),transparent)}
-  .marquee-section::after{right:0;background:linear-gradient(to left,var(--bg),transparent)}
+  nav .links {
+    display: flex;
+    gap: 28px;
+  }
 
-  .marquee-track{display:flex;will-change:transform}
-  .marquee-item{display:flex;align-items:center;justify-content:center;flex-shrink:0;padding:0 32px;opacity:.3;filter:grayscale(100%) brightness(2);transition:.4s;text-decoration:none}
-  .marquee-item:hover{opacity:.9;filter:grayscale(0%) brightness(1.2);transform:scale(1.2)}
-  .marquee-item img{height:28px;max-width:110px;object-fit:contain}
+  nav .links a {
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
 
-  .fade-in{opacity:0;transform:translateY(16px);transition:.7s}
-  .fade-in.visible{opacity:1;transform:none}
+  nav .links a:hover { color: var(--text-primary); }
+
+  /* ─── HERO ─── */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-top: 52px;
+    position: relative;
+  }
+
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 1px;
+    height: 64px;
+    background: linear-gradient(to bottom, var(--text-muted), transparent);
+    animation: pulse-line 3s ease-in-out infinite;
+  }
+
+  @keyframes pulse-line {
+    0%, 100% { opacity: 0.2; }
+    50% { opacity: 0.6; }
+  }
+
+  .hero h1 {
+    font-size: clamp(38px, 5.5vw, 58px);
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    margin-bottom: 24px;
+    color: var(--accent);
+  }
+
+  .hero .degrees {
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 20px;
+  }
+
+  .hero .subtitle {
+    font-size: 17px;
+    font-weight: 400;
+    color: var(--text-secondary);
+    max-width: 520px;
+    line-height: 1.8;
+  }
+
+  .hero .subtitle strong {
+    color: var(--text-primary);
+    font-weight: 600;
+  }
+
+  /* ─── SECTIONS ─── */
+  section {
+    padding: 100px 0;
+    border-top: 1px solid var(--border);
+  }
+
+  .section-label {
+    font-family: 'Inter', sans-serif;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 40px;
+  }
+
+  /* ─── PUBLICATION ─── */
+  .pub-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 28px 32px;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .pub-card:hover {
+    border-color: #2a2a2a;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+  }
+
+  .pub-card .venue {
+    font-family: 'Inter', sans-serif;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 10px;
+  }
+
+  .pub-card h3 {
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 1.45;
+    margin-bottom: 10px;
+  }
+
+  .pub-card .authors {
+    font-size: 14px;
+    color: var(--text-secondary);
+    margin-bottom: 16px;
+  }
+
+  .pub-card .authors em {
+    color: var(--text-primary);
+    font-style: normal;
+    font-weight: 600;
+  }
+
+  .pub-card .meta {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .pub-card .meta a {
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--accent);
+    text-decoration: none;
+    padding: 4px 12px;
+    border: 1px solid rgba(200,184,160,0.2);
+    border-radius: 4px;
+    transition: all 0.3s ease;
+  }
+
+  .pub-card .meta a:hover {
+    background: var(--accent-dim);
+    border-color: rgba(200,184,160,0.4);
+  }
+
+  /* ─── CONFERENCES ─── */
+  .conf-item {
+    padding: 16px 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .conf-item:last-child { border-bottom: none; }
+
+  .conf-item .conf-title {
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--text-primary);
+    margin-bottom: 3px;
+  }
+
+  .conf-item .conf-detail {
+    font-size: 13px;
+    color: var(--text-secondary);
+  }
+
+  .conf-item .conf-badge {
+    display: inline-block;
+    font-family: 'Inter', sans-serif;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent);
+    background: var(--accent-dim);
+    padding: 3px 10px;
+    border-radius: 3px;
+    margin-top: 6px;
+  }
+
+  /* ─── MARQUEE (JS-driven) ─── */
+  .marquee-section {
+    padding: 80px 0;
+    border-top: 1px solid var(--border);
+    overflow: hidden;
+    position: relative;
+  }
+
+  /* Soft fade edges */
+  .marquee-section::before,
+  .marquee-section::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 80px;
+    z-index: 2;
+    pointer-events: none;
+  }
+  .marquee-section::before {
+    left: 0;
+    background: linear-gradient(to right, var(--bg), transparent);
+  }
+  .marquee-section::after {
+    right: 0;
+    background: linear-gradient(to left, var(--bg), transparent);
+  }
+
+  .marquee-track {
+    display: flex;
+    will-change: transform;
+  }
+
+  .marquee-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    padding: 0 32px;
+    opacity: 0.3;
+    filter: grayscale(100%) brightness(2);
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    text-decoration: none;
+  }
+
+  .marquee-item:hover {
+    opacity: 0.9;
+    filter: grayscale(0%) brightness(1.2);
+    transform: scale(1.2);
+  }
+
+  .marquee-item img {
+    height: 28px;
+    width: auto;
+    max-width: 110px;
+    object-fit: contain;
+    pointer-events: none;
+  }
+
+  /* ─── CONNECT ─── */
+  .connect-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+    gap: 10px;
+  }
+
+  .connect-card {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px 20px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+  }
+
+  .connect-card:hover {
+    border-color: #2a2a2a;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    transform: translateY(-1px);
+  }
+
+  .connect-card .icon {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 5px;
+    background: var(--accent-dim);
+    flex-shrink: 0;
+  }
+
+  .connect-card .icon svg {
+    width: 16px;
+    height: 16px;
+    fill: var(--accent);
+  }
+
+  .connect-card .label {
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text-primary);
+  }
+
+  .connect-card .handle {
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    color: var(--text-muted);
+  }
+
+  /* ─── FOOTER ─── */
+  footer {
+    padding: 40px 0;
+    border-top: 1px solid var(--border);
+    text-align: center;
+  }
+
+  footer p {
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    color: var(--text-muted);
+    letter-spacing: 0.04em;
+  }
+
+  /* ─── ANIMATIONS ─── */
+  .fade-in {
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+
+  .fade-in.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  @media (max-width: 640px) {
+    .container { padding: 0 20px; }
+    section { padding: 72px 0; }
+    nav .links { gap: 16px; }
+    nav .links a { font-size: 10px; }
+    .connect-grid { grid-template-columns: 1fr; }
+    .marquee-section::before,
+    .marquee-section::after { width: 40px; }
+  }
 </style>
 </head>
-
 <body>
 
+<!-- NAV -->
 <nav>
-<div class="container">
-<div class="logo">T. Wu</div>
-<div class="links"><a href="#research">Research</a><a href="#connect">Connect</a></div>
-</div>
+  <div class="container">
+    <div class="logo">T. Wu</div>
+    <div class="links">
+      <a href="#research">Research</a>
+      <a href="#connect">Connect</a>
+    </div>
+  </div>
 </nav>
 
+<!-- HERO -->
 <div class="hero">
-<div class="container">
-<div class="degrees fade-in">M.Sc. Mathematics · B.Sc. Mathematics · B.Sc. Bioinformatics</div>
-<h1 class="fade-in">Tongyan<br>(Tom) Wu</h1>
-<p class="fade-in">Published researcher in quantum computing and machine learning. Based in Munich.</p>
-</div>
+  <div class="container">
+    <div class="degrees fade-in">M.Sc. Mathematics &nbsp;&middot;&nbsp; B.Sc. Mathematics &nbsp;&middot;&nbsp; B.Sc. Bioinformatics</div>
+    <h1 class="fade-in">Tongyan<br>(Tom) Wu</h1>
+    <p class="subtitle fade-in">
+      Published researcher in <strong>quantum computing</strong> and <strong>machine learning</strong>. 
+      Working at the intersection of mathematics, biology, and learning theory.
+      Based in Munich.
+    </p>
+  </div>
 </div>
 
+<!-- LOGO MARQUEE -->
 <div class="marquee-section">
-<div class="marquee-track" id="marquee-track">
-<img class="marquee-item" src="assets/logos/tum.svg">
-<img class="marquee-item" src="assets/logos/lmu.svg">
-<img class="marquee-item" src="assets/logos/hitachi.svg">
-<img class="marquee-item" src="assets/logos/ucsd.svg">
-<img class="marquee-item" src="assets/logos/fraunhofer.svg">
-<img class="marquee-item" src="assets/logos/aarhus.svg">
-<img class="marquee-item" src="assets/logos/bmw.svg">
-<img class="marquee-item" src="assets/logos/maxplanck.svg">
-<img class="marquee-item" src="assets/logos/helmholtz.svg">
-</div>
+  <div class="section-label fade-in" style="text-align:center; margin-bottom: 32px;">Affiliations</div>
+
+  <div class="marquee-track" id="marquee-track">
+    <!-- canonical set (JS clones as needed) -->
+    <a class="marquee-item" href="https://www.tum.de/en/" target="_blank" rel="noopener" title="Technical University of Munich">
+      <img src="assets/logos/tum.svg" alt="TU Munich">
+    </a>
+    <a class="marquee-item" href="https://www.lmu.de/en/" target="_blank" rel="noopener" title="Ludwig Maximilian University of Munich">
+      <img src="assets/logos/lmu.svg" alt="LMU Munich">
+    </a>
+    <a class="marquee-item" href="https://www.hitachiventures.com/" target="_blank" rel="noopener" title="Hitachi Ventures">
+      <img src="assets/logos/hitachi.svg" alt="Hitachi Ventures" style="height:22px;">
+    </a>
+    <a class="marquee-item" href="https://ucsd.edu/" target="_blank" rel="noopener" title="UC San Diego">
+      <img src="assets/logos/ucsd.svg" alt="UC San Diego" style="height:34px;">
+    </a>
+    <a class="marquee-item" href="https://www.iks.fraunhofer.de/en.html" target="_blank" rel="noopener" title="Fraunhofer IKS">
+      <img src="assets/logos/fraunhofer.svg" alt="Fraunhofer">
+    </a>
+    <a class="marquee-item" href="https://international.au.dk/" target="_blank" rel="noopener" title="Aarhus University">
+      <img src="assets/logos/aarhus.svg" alt="Aarhus University">
+    </a>
+    <a class="marquee-item" href="https://www.bmw.com/" target="_blank" rel="noopener" title="BMW">
+      <img src="assets/logos/bmw.svg" alt="BMW" style="height:32px;">
+    </a>
+    <a class="marquee-item" href="https://www.mpg.de/en" target="_blank" rel="noopener" title="Max Planck Society">
+      <img src="assets/logos/maxplanck.svg" alt="Max Planck">
+    </a>
+    <a class="marquee-item" href="https://www.helmholtz.de/en" target="_blank" rel="noopener" title="Helmholtz">
+      <img src="assets/logos/helmholtz.svg" alt="Helmholtz" style="height:32px;">
+    </a>
+  </div>
 </div>
 
+<!-- PUBLICATIONS -->
+<section id="research">
+  <div class="container">
+    <div class="section-label fade-in">Publication</div>
+
+    <div class="pub-card fade-in">
+      <div class="venue">Physical Review A &nbsp;&middot;&nbsp; 2025</div>
+      <h3>Generalization Bounds in Hybrid Quantum-Classical Machine Learning Models</h3>
+      <p class="authors"><em>Wu, T.</em> (First Author), Bentellis, A., Sakhnenko, A., &amp; Lorenz, J. M.</p>
+      <div class="meta">
+        <a href="https://doi.org/10.1103/6ckt-hlh8" target="_blank" rel="noopener">DOI ↗</a>
+        <a href="https://scholar.google.com/citations?user=CxNH8eMAAAAJ&hl=en" target="_blank" rel="noopener">Scholar ↗</a>
+      </div>
+    </div>
+
+    <div style="margin-top: 48px;">
+      <div class="section-label fade-in">Conferences &amp; Awards</div>
+
+      <div class="conf-item fade-in">
+        <div class="conf-title">QTML 2025 — Poster Presentation</div>
+        <div class="conf-detail">Quantum Techniques in Machine Learning</div>
+      </div>
+
+      <div class="conf-item fade-in">
+        <div class="conf-title">EQAI 2025</div>
+        <div class="conf-detail">European Quantum and AI Summer School</div>
+        <div class="conf-badge">Poster Award</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONNECT -->
+<section id="connect">
+  <div class="container">
+    <div class="section-label fade-in">Connect</div>
+
+    <div class="connect-grid fade-in">
+
+      <a class="connect-card" href="https://scholar.google.com/citations?user=CxNH8eMAAAAJ&hl=en" target="_blank" rel="noopener">
+        <div class="icon">
+          <svg viewBox="0 0 24 24"><path d="M12 24a7 7 0 1 1 0-14 7 7 0 0 1 0 14zm0-2a5 5 0 1 0 0-10 5 5 0 0 0 0 10zM1.5 9L12 0l10.5 9h-4v3.05A8.96 8.96 0 0 0 12 9.5a8.96 8.96 0 0 0-6.5 2.55V9h-4z"/></svg>
+        </div>
+        <div>
+          <div class="label">Google Scholar</div>
+          <div class="handle">Citations</div>
+        </div>
+      </a>
+
+      <a class="connect-card" href="https://orcid.org/0009-0009-2810-4438" target="_blank" rel="noopener">
+        <div class="icon">
+          <svg viewBox="0 0 24 24"><path d="M12 0C5.372 0 0 5.372 0 12s5.372 12 12 12 12-5.372 12-12S18.628 0 12 0zM7.369 4.378a.87.87 0 1 1 0 1.74.87.87 0 0 1 0-1.74zm-.78 3.29h1.56v11.06H6.59V7.668zm3.921 0h4.21c3.72 0 5.56 2.47 5.56 5.53 0 3.06-1.84 5.53-5.56 5.53h-4.21V7.668zm1.56 1.39v8.28h2.65c2.89 0 3.93-2.13 3.93-4.14 0-2.01-1.04-4.14-3.93-4.14h-2.65z"/></svg>
+        </div>
+        <div>
+          <div class="label">ORCID</div>
+          <div class="handle">0009-0009-2810-4438</div>
+        </div>
+      </a>
+
+      <a class="connect-card" href="https://www.linkedin.com/in/tongyan-wu-b06805290/" target="_blank" rel="noopener">
+        <div class="icon">
+          <svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+        </div>
+        <div>
+          <div class="label">LinkedIn</div>
+          <div class="handle">Tongyan Wu</div>
+        </div>
+      </a>
+
+      <a class="connect-card" href="mailto:tongyan.wu@tum.de">
+        <div class="icon">
+          <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+        </div>
+        <div>
+          <div class="label">Email</div>
+          <div class="handle">contact 'at' tongyanwu.com</div>
+        </div>
+      </a>
+
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <p>&copy; 2026 Tongyan Wu &middot; Munich</p>
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
 <script>
-(function(){
- const track=document.getElementById('marquee-track');
- if(!track) return;
+  // ─── Scroll fade-in ───
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) entry.target.classList.add('visible');
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -30px 0px' });
 
- const originals=[...track.children];
- let width=0,offset=0,last=0;
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
 
- function measure(){
-   width=originals.reduce((s,e)=>s+e.getBoundingClientRect().width,0);
- }
+  document.querySelectorAll('.hero .fade-in').forEach((el, i) => {
+    el.style.transitionDelay = `${i * 0.12}s`;
+    setTimeout(() => el.classList.add('visible'), 80);
+  });
 
- function clone(){
-   [...track.children].slice(originals.length).forEach(e=>e.remove());
-   measure();
-   if(!width){setTimeout(clone,60);return;}
-   const need=Math.ceil(window.innerWidth*2/width)+1;
-   for(let i=0;i<need;i++) originals.forEach(n=>track.appendChild(n.cloneNode(true)));
- }
+  // ─── Infinite marquee (adaptive cloning) ───
+  (function() {
+    const track = document.getElementById('marquee-track');
+    if (!track) return;
 
- function animate(t){
-   if(!last) last=t;
-   offset+=40*(t-last)/1000;
-   if(offset>width) offset-=width;
-   track.style.transform=`translateX(${-offset}px)`;
-   last=t;
-   requestAnimationFrame(animate);
- }
+    const originals = Array.from(track.children);
+    const SPEED = 40; // px/s
+    let setWidth = 0;
+    let offset = 0;
+    let lastTime = 0;
+    let isPaused = false;
 
- clone();
- requestAnimationFrame(animate);
- window.addEventListener('resize',()=>{offset=0;clone();});
-})();
+    function cleanupClones() {
+      Array.from(track.children).forEach((el, i) => {
+        if (i >= originals.length) el.remove();
+      });
+    }
+
+    function measureOneSet() {
+      setWidth = originals.reduce((sum, el) => sum + el.getBoundingClientRect().width, 0);
+    }
+
+    function cloneToFill() {
+      cleanupClones();
+      measureOneSet();
+
+      // If images haven't painted yet, width can be 0. Retry.
+      if (!setWidth) return false;
+
+      const viewportW = window.innerWidth;
+      const copiesNeeded = Math.ceil((viewportW * 2) / setWidth) + 1;
+
+      for (let c = 0; c < copiesNeeded; c++) {
+        originals.forEach(item => track.appendChild(item.cloneNode(true)));
+      }
+      return true;
+    }
+
+    function animate(time) {
+      if (!lastTime) lastTime = time;
+      const dt = (time - lastTime) / 1000;
+      lastTime = time;
+
+      if (!isPaused && setWidth) {
+        offset += SPEED * dt;
+        if (offset >= setWidth) offset -= setWidth;
+        track.style.transform = `translateX(${-offset}px)`;
+      }
+
+      requestAnimationFrame(animate);
+    }
+
+    track.addEventListener('mouseenter', () => { isPaused = true; });
+    track.addEventListener('mouseleave', () => { isPaused = false; });
+
+    function init() {
+      const ok = cloneToFill();
+      if (!ok) {
+        setTimeout(init, 60);
+        return;
+      }
+      offset = 0;
+      lastTime = 0;
+      requestAnimationFrame(animate);
+    }
+    init();
+
+    let resizeTimer;
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(() => {
+        offset = 0;
+        lastTime = 0;
+        cloneToFill();
+      }, 200);
+    });
+  })();
 </script>
 
 </body>
